@@ -25,9 +25,22 @@ Routing:
 - **Long multi-talk stream** → one item, then segment it into talks.
 - **Single talk** → one item, skip segment.
 
+## Repo layout
+
+The repo root is a one-plugin marketplace; the plugin itself lives one level down, which is the shape both Claude Code and Codex expect:
+
+```
+.claude-plugin/marketplace.json     # Claude Code marketplace
+.agents/plugins/marketplace.json    # Codex marketplace
+plugins/video-digest/
+├── .claude-plugin/plugin.json
+├── .codex-plugin/plugin.json
+└── skills/video-digest{,-ingest,-segment,-summarize,-slides,-site}/
+```
+
 ## Requirements
 
-- **Apple Silicon Mac** — transcription runs [`mlx-whisper`](https://github.com/ml-explore/mlx-examples/tree/main/whisper) (`large-v3-turbo`, ~10–15× realtime). On other platforms, swap the one `uvx --from mlx-whisper` line in `video-digest-ingest/scripts/vd_ingest.sh` for `whisper`/`faster-whisper`; no other stage cares.
+- **Apple Silicon Mac** — transcription runs [`mlx-whisper`](https://github.com/ml-explore/mlx-examples/tree/main/whisper) (`large-v3-turbo`, ~10–15× realtime). On other platforms, swap the one `uvx --from mlx-whisper` line in `plugins/video-digest/skills/video-digest-ingest/scripts/vd_ingest.sh` for `whisper`/`faster-whisper`; no other stage cares.
 - `yt-dlp` and `ffmpeg` / `ffprobe` — `brew install yt-dlp ffmpeg`
 - [`uv`](https://docs.astral.sh/uv/) — pulls Whisper and Pillow on demand (`uvx`, `uv run --with pillow`), so there's nothing to pip-install
 - `python3`
@@ -50,11 +63,11 @@ codex plugin marketplace add simonlee2/video-digest --ref main
 codex plugin add video-digest@video-digest
 ```
 
-**Any other agent-skills harness** — the six skills are plain directories under `skills/`, so copy them wherever your agent scans:
+**Any other agent-skills harness** — the six skills are plain directories under `plugins/video-digest/skills/`, so copy them wherever your agent scans:
 
 ```bash
 git clone https://github.com/simonlee2/video-digest.git
-cp -R video-digest/skills/* ~/.claude/skills/     # or ~/.codex/skills/, ~/.cursor/skills/, .agents/skills/ …
+cp -R video-digest/plugins/video-digest/skills/* ~/.claude/skills/     # or ~/.codex/skills/, ~/.cursor/skills/, .agents/skills/ …
 ```
 
 See [INSTALL.md](INSTALL.md) for verify/update/uninstall.

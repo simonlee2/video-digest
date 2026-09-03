@@ -55,7 +55,7 @@ The skills are plain directories with a `SKILL.md`, `scripts/`, and `references/
 
 ```bash
 git clone https://github.com/simonlee2/video-digest.git
-cp -R video-digest/skills/* <wherever your agent scans>
+cp -R video-digest/plugins/video-digest/skills/* <wherever your agent scans>
 # ~/.claude/skills/ · ~/.codex/skills/ · ~/.cursor/skills/ · .agents/skills/ · ~/.config/opencode/skills/
 ```
 
@@ -63,7 +63,7 @@ Or symlink, so `git pull` updates the installed skills:
 
 ```bash
 git clone https://github.com/simonlee2/video-digest.git ~/Developer/video-digest
-for d in ~/Developer/video-digest/skills/*; do ln -s "$d" ~/.claude/skills/; done
+for d in ~/Developer/video-digest/plugins/video-digest/skills/*; do ln -s "$d" ~/.claude/skills/; done
 ```
 
 Start a new session afterward — skills are indexed at session start.
@@ -77,7 +77,7 @@ brew install yt-dlp ffmpeg
 brew install uv          # pulls Whisper and Pillow on demand
 ```
 
-Transcription assumes an Apple Silicon Mac (`mlx-whisper`). On other platforms, swap the one `uvx --from mlx-whisper` line in `skills/video-digest-ingest/scripts/vd_ingest.sh` for `whisper` or `faster-whisper`.
+Transcription assumes an Apple Silicon Mac (`mlx-whisper`). On other platforms, swap the one `uvx --from mlx-whisper` line in `plugins/video-digest/skills/video-digest-ingest/scripts/vd_ingest.sh` for `whisper` or `faster-whisper`.
 
 ## Troubleshooting
 
