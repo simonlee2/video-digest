@@ -1,6 +1,7 @@
 ---
 name: video-digest-summarize
 description: Turn segmented talk transcripts into digest text - per-talk transcript slices, cleaned transcripts, summary docs with timestamped highlights, TL;DR + practical takeaway JSON, and optional Traditional Chinese translation. Stage 3 of the video-digest pipeline, after ingest (and segment for multi-talk streams). Use when summarizing talks for a video digest.
+user-invocable: false
 ---
 
 # video-digest-summarize

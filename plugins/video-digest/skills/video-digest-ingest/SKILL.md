@@ -1,6 +1,7 @@
 ---
 name: video-digest-ingest
 description: Acquire videos and transcribe them for a video digest project - probe/enumerate a YouTube playlist, channel streams tab, or local folder; download at 720p; extract audio; transcribe with mlx-whisper; emit a 30s timeline. Stage 1 of the video-digest pipeline. Use when ingesting videos for a digest, or when asked to download+transcribe talk videos.
+user-invocable: false
 ---
 
 # video-digest-ingest

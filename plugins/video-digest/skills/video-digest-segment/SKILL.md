@@ -1,6 +1,7 @@
 ---
 name: video-digest-segment
 description: Segment a long multi-talk video (conference stream, all-day recording) into individual talks by reading its transcript timeline - produces talks.json for the video-digest pipeline. Stage 2; skip for single-talk videos (video-digest-ingest's vd_single.py handles those). Use when a digest source video contains multiple talks/sessions.
+user-invocable: false
 ---
 
 # video-digest-segment

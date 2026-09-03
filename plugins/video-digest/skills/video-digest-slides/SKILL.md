@@ -1,6 +1,7 @@
 ---
 name: video-digest-slides
 description: Extract and select slide images for a video digest - grab candidate frames at each highlight timestamp (-5s/exact/+5s), build labeled montages, then vision-pick and verify the frame that actually shows a slide. Stage 4 of the video-digest pipeline, after summarize. Use when pairing talk highlights with the speaker's slides.
+user-invocable: false
 ---
 
 # video-digest-slides

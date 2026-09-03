@@ -1,6 +1,7 @@
 ---
 name: video-digest-site
 description: Build and publish the digest website from processed video-digest content - overview card grid, per-talk detail pages with slides and takeaways, YouTube deep links, optional EN/Traditional-Chinese toggle and a cited synthesis essay. Stage 5 (final) of the video-digest pipeline. Use when rendering or publishing a video digest site, or refreshing it after new talks.
+user-invocable: false
 ---
 
 # video-digest-site

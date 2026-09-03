@@ -9,6 +9,9 @@ Turn videos into a digest site: overview card grid → per-talk detail (TL;DR, "
 
 ## Stage skills (mix & match)
 
+The five stage skills are `user-invocable: false` — they exist for THIS skill to route to (and for stage subagents to load one at a time), so only `video-digest` shows up in the user's skill picker. Invoke them yourself as needed; the user never has to name a stage.
+
+
 | Stage | Skill | In → Out |
 |---|---|---|
 | 1. Ingest | `video-digest-ingest` | source (URL/playlist/folder) → `video.mp4`, transcript, 30s timeline per item |
