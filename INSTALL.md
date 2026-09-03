@@ -45,7 +45,7 @@ Update / uninstall:
 
 ```bash
 codex plugin marketplace upgrade video-digest
-codex plugin remove video-digest
+codex plugin remove video-digest@video-digest
 codex plugin marketplace remove video-digest
 ```
 
@@ -78,6 +78,15 @@ brew install uv          # pulls Whisper and Pillow on demand
 ```
 
 Transcription assumes an Apple Silicon Mac (`mlx-whisper`). On other platforms, swap the one `uvx --from mlx-whisper` line in `plugins/video-digest/skills/video-digest-ingest/scripts/vd_ingest.sh` for `whisper` or `faster-whisper`.
+
+## Maintaining a fork
+
+The installed copy is cached per version, so after editing skills bump `version` in **both** `plugins/video-digest/.claude-plugin/plugin.json` and `plugins/video-digest/.codex-plugin/plugin.json`, push, then:
+
+```bash
+claude plugin marketplace update video-digest && claude plugin install video-digest@video-digest
+codex plugin marketplace upgrade video-digest && codex plugin add video-digest@video-digest
+```
 
 ## Troubleshooting
 
