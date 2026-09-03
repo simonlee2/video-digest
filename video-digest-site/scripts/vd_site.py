@@ -29,7 +29,7 @@ IMG_W, IMG_Q = (900, 62) if DIST else (600, 50)
 THUMB_W, THUMB_Q = (480, 58) if DIST else (400, 52)
 # Slide budget (see _allocate_slides). No flat per-talk cap: keep every distinct slide up
 # to SLIDE_CEILING; trim only when the total exceeds SLIDE_BUDGET, and then globally.
-# DIST is file-count bound (here.now ~1000 files), so it's effectively uncapped; the
+# DIST is file-count bound (hosts commonly cap ~1000 files), so it's effectively uncapped; the
 # single-file artifact is size bound (~8MB of data-URIs), so it gets a real budget.
 SLIDE_CEILING = CFG.get("slide_ceiling", 40)          # per-talk safety ceiling
 SLIDE_FLOOR   = CFG.get("slide_floor", 3)             # min slides a talk keeps when trimming
@@ -201,7 +201,7 @@ def _allocate_slides(groups):
     else:
         print(f"slides ({mode}): {kept} distinct kept (dedup≤{DEDUP_THRESH}, no budget trim)")
     if DIST and kept > 900:
-        print(f"WARNING: {kept} slide files — here.now caps ~1000; consider splitting per day/group")
+        print(f"WARNING: {kept} slide files — many hosts cap ~1000; consider splitting per day/group")
 
 groups = [g for g in (build_group(d) for d in GROUPS) if g["items"]]
 if not groups:

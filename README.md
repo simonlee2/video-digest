@@ -76,12 +76,18 @@ A project looks like this:
 
 `digest.json` is where you steer the output: `audience` shapes the takeaways ("what should a platform engineer do because of this talk"), `languages: ["en","zh"]` turns on a Traditional Chinese toggle, `glossary` fixes recurring Whisper mishearings of product and speaker names, `slide_cap` bounds how many slides each talk embeds.
 
-## Output
+## Output and publishing
 
-Two modes from the same content:
+Two build modes from the same content:
 
-- **`dist/` folder** — 900px slides as separate files, effectively uncapped; publish to any static host.
-- **Single self-contained HTML file** — slides inlined as data URIs, capped around 8 MB; good for pasting into an artifact or emailing.
+- **`dist/` folder** — `index.html` + 900px slides as separate files. Uncapped in size, bounded only by how many files your host accepts.
+- **Single self-contained HTML file** — slides inlined as data URIs, practical ceiling ~8 MB.
+
+Publishing is deliberately **tool-agnostic**: the skill tells the agent to look at what the environment actually
+offers and use that — a publish/deploy skill or MCP tool, the host app's own artifact or site feature, or an
+authed CLI (`gh` → Pages, `netlify`, `vercel`, `wrangler`). The target is chosen *before* the build, since a
+folder-capable host gets `--dist` and a single-file-only host gets the inlined build. With nothing available, you
+still get a plain static folder you can drop anywhere, plus a one-liner to serve it locally.
 
 ## Cost note
 

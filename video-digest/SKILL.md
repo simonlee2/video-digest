@@ -15,7 +15,7 @@ Turn videos into a digest site: overview card grid → per-talk detail (TL;DR, "
 | 2. Segment | `video-digest-segment` | ONLY multi-talk streams: timeline → `talks.json`. Single-video items: auto (1-talk talks.json, done by ingest) |
 | 3. Summarize | `video-digest-summarize` | transcript slices → `sessions/*.md`, `*.take.json`, optional `zh.json` |
 | 4. Slides | `video-digest-slides` | highlights → candidate frames → montages → vision-picked `frames/sel_*.json` |
-| 5. Site | `video-digest-site` | everything → `index.html`/`dist/` (+ optional essay), publish to any static host |
+| 5. Site | `video-digest-site` | everything → `index.html`/`dist/` (+ optional essay), published with whatever publishing tool the environment offers |
 
 Routing by source shape:
 - **YouTube playlist / folder of videos** → ingest each video as its own item (skip segment). One group per playlist/folder.
@@ -63,7 +63,7 @@ All text fields accept a string (EN-only) or `{"en":..., "zh":...}`. Minimal exa
 
 - `audience` — steers takeaway prompts ("what should X do because of this talk").
 - `languages` — add `"zh"` to enable the 繁中 toggle (translate step becomes required).
-- `slide_cap` — max embedded slides/talk. Keep total slide files under whatever your host tolerates (here.now caps ~1000); cap = (1000 − overhead) / talks.
+- `slide_cap` — max embedded slides/talk. Bound by the publish target: single-file builds are size-capped (~8 MB), folder builds are file-count-capped by the host (~1000 is a common ceiling) → cap ≈ (limit − overhead) / talks.
 - `glossary`/`nonspeech` — transcript corrections; start empty, fill after reading the pilot transcript.
 - Optional `kinds` — extra talk-kind pills: `{"demo": {"class":"fire","en":"Demo","zh":"示範"}}`. Built-ins: main/keynote (green), fireside (purple), track/talk (blue); `cutaway`+`nonspeech` are always excluded from the digest.
 
@@ -73,7 +73,7 @@ All text fields accept a string (EN-only) or `{"en":..., "zh":...}`. Minimal exa
 2. **PILOT FIRST** on batches: run ONE item end-to-end (ingest → summarize → slides → site), inspect the output, fix config (glossary, kinds, prompts), then batch the rest. Never fan out 50 downloads before one full-path validation.
 3. Batch: ingest serially (concurrent Whisper exhausts RAM). LLM stages fan out ~5 talks/agent — **on cheap models** (table below).
 4. **Essay (default, every digest)**: after all talks are processed, run the site skill's corpus step and write the synthesis essay (`narrative.json`) with the STRONGEST model — plus `narrative.zh.json` if bilingual. On by default; skip only if asked.
-5. Site: build, eyeball in browser, publish (static host for `dist/`, or a single ≤8MB self-contained HTML file).
+5. Site: pick the publish target from what this environment actually has (see the site skill — never assume a specific tool), build the mode it accepts, eyeball it in a browser, then publish and report the URL.
 5. Register done items in `<project>/ingested.json` `{"items":{"<videoId>":{"group","item"}}}` so re-runs skip them.
 
 ## Model tiers — delegate grunt work to cheaper models
