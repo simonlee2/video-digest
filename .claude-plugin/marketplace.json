@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "video-digest",
+  "description": "Video-to-digest pipeline skills for Claude Code.",
+  "owner": { "name": "Simon Lee" },
+  "plugins": [
+    {
+      "name": "video-digest",
+      "description": "Turn talk videos - a YouTube playlist, a conference stream, or local files - into a shareable web digest: per-talk TL;DRs, takeaways, and slides paired with narration.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

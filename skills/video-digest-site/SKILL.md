@@ -8,6 +8,8 @@ description: Build and publish the digest website from processed video-digest co
 Input: project dir with `digest.json` + processed `groups/<group>/<item>/` (manifest, highlights, sel_*, take.json; optional zh.json). Needs Pillow.
 
 ## Build
+> Script paths below are relative to **this skill's own directory** (`.../skills/video-digest-*/`). Run them from there, or prefix the skill dir — the `<project>` / `<item_dir>` arguments are separate and can be anywhere.
+
 
 ```
 python3 scripts/vd_site.py <project>                 # single-file digest.html (data-URI images)

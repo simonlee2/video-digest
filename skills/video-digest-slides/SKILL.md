@@ -8,6 +8,8 @@ description: Extract and select slide images for a video digest - grab candidate
 Input: `<item_dir>` with `manifest.json` + `sessions/*.md` (highlights with timestamps). Requires Pillow (`uv run --with pillow` if missing).
 
 ## 1. Deterministic (scripts/)
+> Script paths below are relative to **this skill's own directory** (`.../skills/video-digest-*/`). Run them from there, or prefix the skill dir — the `<project>` / `<item_dir>` arguments are separate and can be anywhere.
+
 
 ```
 python3 scripts/vd_frames.py <item_dir>    # frames/<stem>/hNN_{0,1,2}.jpg + highlights.json

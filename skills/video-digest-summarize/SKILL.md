@@ -8,6 +8,8 @@ description: Turn segmented talk transcripts into digest text - per-talk transcr
 Input: `<item_dir>` with `talks.json` + `transcript/transcript.tsv`. See `video-digest` for layout/config.
 
 ## 1. Deterministic prep (scripts/)
+> Script paths below are relative to **this skill's own directory** (`.../skills/video-digest-*/`). Run them from there, or prefix the skill dir — the `<project>` / `<item_dir>` arguments are separate and can be anywhere.
+
 
 ```
 python3 scripts/vd_sessions.py <item_dir> [--clips]   # slices + manifest.json (+ per-talk clips)

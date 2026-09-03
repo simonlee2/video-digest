@@ -36,19 +36,28 @@ Budget roughly 2–5 min download and ~0.5–1 GB disk per hour of video.
 
 ## Install
 
-Copy the skill directories into your Claude Code skills folder:
+**Claude Code**
+
+```bash
+claude plugin marketplace add simonlee2/video-digest
+claude plugin install video-digest@video-digest
+```
+
+**Codex**
+
+```bash
+codex plugin marketplace add simonlee2/video-digest --ref main
+codex plugin add video-digest@video-digest
+```
+
+**Any other agent-skills harness** — the six skills are plain directories under `skills/`, so copy them wherever your agent scans:
 
 ```bash
 git clone https://github.com/simonlee2/video-digest.git
-cp -R video-digest/video-digest* ~/.claude/skills/
+cp -R video-digest/skills/* ~/.claude/skills/     # or ~/.codex/skills/, ~/.cursor/skills/, .agents/skills/ …
 ```
 
-Or symlink them, so a `git pull` updates the installed skills:
-
-```bash
-git clone https://github.com/simonlee2/video-digest.git ~/Developer/video-digest
-for d in ~/Developer/video-digest/video-digest*; do ln -s "$d" ~/.claude/skills/; done
-```
+See [INSTALL.md](INSTALL.md) for verify/update/uninstall.
 
 ## Use
 

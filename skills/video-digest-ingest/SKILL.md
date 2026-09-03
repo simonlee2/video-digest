@@ -8,6 +8,8 @@ description: Acquire videos and transcribe them for a video digest project - pro
 Deterministic stage 1. See `video-digest` (umbrella) for the project layout.
 
 ## Scripts (in `scripts/`, all take explicit paths — no env vars)
+> Script paths below are relative to **this skill's own directory** (`.../skills/video-digest-*/`). Run them from there, or prefix the skill dir — the `<project>` / `<item_dir>` arguments are separate and can be anywhere.
+
 
 ### Probe a source (ALWAYS do this first; supports pilot-first)
 ```
