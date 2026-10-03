@@ -1,120 +1,45 @@
-# video-digest
+# Video Digest
 
-A set of [Claude Code](https://claude.com/claude-code) skills that turn talk videos into a **shareable web digest**: a card grid of every talk, and per-talk pages with a TL;DR, "take this to work" takeaways, timestamped highlights, and the speaker's actual slides paired with what they said — each deep-linking back into YouTube.
+Turn a talk or playlist into a browsable HTML digest: timestamped highlights, genuine video frames, and takeaways grounded in what the speakers said.
 
-Point it at a YouTube playlist, a channel's streams tab, one long multi-talk conference stream, a single video, or a folder of local files. Everything runs locally: `yt-dlp` for download, Whisper for transcription, `ffmpeg` for frames, and Claude for the judgment calls (segmenting talks, summarizing, picking which frame is really a slide).
+**One self-contained skill.** Use it with Claude Code, Codex, or an Agent Skills-compatible harness with file, shell and image tools. No hosted app or plugin account is required. Current review candidate: **0.3.0-rc.3**, not yet released.
 
-Built while digesting AI Engineer World's Fair 2026, Cursor Compile 2026, and Figma's conference, then generalized.
+## Try it without a video
 
-## The pipeline
-
-Five composable stage skills plus an orchestrator. Each stage is idempotent per item, so you can re-run one talk — or one stage — without touching the rest.
-
-| Stage | Skill | In → Out |
-|---|---|---|
-| — | `video-digest` | orchestrator: routes by source shape, owns project config |
-| 1. Ingest | `video-digest-ingest` | source (URL / playlist / folder) → `video.mp4`, transcript, 30s timeline per item |
-| 2. Segment | `video-digest-segment` | multi-talk streams only: timeline → `talks.json` |
-| 3. Summarize | `video-digest-summarize` | transcript slices → summary docs, TL;DR + takeaway JSON, optional 繁中 translation |
-| 4. Slides | `video-digest-slides` | highlights → candidate frames → montages → vision-picked slide per highlight |
-| 5. Site | `video-digest-site` | everything → `index.html` / `dist/` (+ optional synthesis essay) |
-
-Routing:
-
-- **YouTube playlist / folder of videos** → each video is its own item; skip segment.
-- **Long multi-talk stream** → one item, then segment it into talks.
-- **Single talk** → one item, skip segment.
-
-## Repo layout
-
-The repo root is a one-plugin marketplace; the plugin itself lives one level down, which is the shape both Claude Code and Codex expect:
-
-```
-.claude-plugin/marketplace.json     # Claude Code marketplace
-.agents/plugins/marketplace.json    # Codex marketplace
-plugins/video-digest/
-├── .claude-plugin/plugin.json
-├── .codex-plugin/plugin.json
-└── skills/video-digest{,-ingest,-segment,-summarize,-slides,-site}/
-```
-
-## Requirements
-
-- **Apple Silicon Mac** — transcription runs [`mlx-whisper`](https://github.com/ml-explore/mlx-examples/tree/main/whisper) (`large-v3-turbo`, ~10–15× realtime). On other platforms, swap the one `uvx --from mlx-whisper` line in `plugins/video-digest/skills/video-digest-ingest/scripts/vd_ingest.sh` for `whisper`/`faster-whisper`; no other stage cares.
-- `yt-dlp` and `ffmpeg` / `ffprobe` — `brew install yt-dlp ffmpeg`
-- [`uv`](https://docs.astral.sh/uv/) — pulls Whisper and Pillow on demand (`uvx`, `uv run --with pillow`), so there's nothing to pip-install
-- `python3`
-
-Budget roughly 2–5 min download and ~0.5–1 GB disk per hour of video.
-
-## Install
-
-**Claude Code**
+From this checkout, using existing Python and Pillow:
 
 ```bash
-claude plugin marketplace add simonlee2/video-digest
-claude plugin install video-digest@video-digest
+python3 scripts/check_install.py ../video-digest-try --host codex
 ```
 
-**Codex**
+Use `--host claude` for `.claude/skills`, or `--host generic` for a neutral `.agents/skills` project. The command refuses existing destinations, installs only the self-contained `video-digest` folder, and builds the fictional demo with the copied scripts.
 
-```bash
-codex plugin marketplace add simonlee2/video-digest --ref main
-codex plugin add video-digest@video-digest
-```
+Open `../video-digest-try/demo/digest.html`. The labeled fictional example demonstrates layout and editorial structure, not real-video transcription quality.
 
-**Any other agent-skills harness** — the six skills are plain directories under `plugins/video-digest/skills/`, so copy them wherever your agent scans:
+## Use it on a recording
 
-```bash
-git clone https://github.com/simonlee2/video-digest.git
-cp -R video-digest/plugins/video-digest/skills/* ~/.claude/skills/     # or ~/.codex/skills/, ~/.cursor/skills/, .agents/skills/ …
-```
+Start your agent in the new project and ask:
 
-See [INSTALL.md](INSTALL.md) for verify/update/uninstall.
+> Use video-digest to make a private English digest of /absolute/path/to/my-talk.mp4 for a product builder. Process one talk as a pilot. Use real frames and transcript-grounded takeaways. Save the HTML for review; do not publish.
 
-## Use
+A YouTube URL or playlist works too, subject to source access. The agent checks tools, acquires and validates playable media, transcribes, selects real frames, grounds the analysis in the transcript, and builds HTML. It can work sequentially; subagents are optional.
 
-In Claude Code, just describe the source:
+[Install and first-run guide](INSTALL.md) · [Host coverage](COMPATIBILITY.md) · [Release review](RELEASE_CANDIDATE.md)
 
-```
-make a digest from https://www.youtube.com/playlist?list=...
-```
+## What runs where
 
-Claude picks up the `video-digest` skill, probes the source (count and duration first), runs **one talk end-to-end as a pilot** so you can fix the config before fanning out, then batches the rest.
+Media acquisition, transcription and rendering run on your machine. The bundled transcription path uses `mlx-whisper` on Apple Silicon Macs; other platforms need a transcript adapter. Your agent's text/vision model performs the editorial work and may send transcripts/frames to a provider or incur usage charges. This is not a claim of fully on-device inference.
 
-A project looks like this:
+Runtime: Python, Pillow, ffmpeg/ffprobe; yt-dlp for remote sources; uv/uvx for the bundled transcription command. The first model/package download needs network access. Run the bundled doctor before installing anything.
 
-```
-<project>/
-├── digest.json                  # config: title, brand, audience, languages, slide_cap, glossary…
-├── groups/<group>/              # a group = a tab/section (a day, a track, or the whole event)
-│   └── <NN-item>/               # an item = ONE source video
-│       ├── source.json          # title, speaker, YouTube url (→ deep links in the digest)
-│       ├── transcript/ sessions/ frames/ montages/
-│       └── talks.json highlights.json
-├── narrative.json               # optional cross-talk synthesis essay
-└── dist/                        # the published site
-```
+## Output and sharing
 
-`digest.json` is where you steer the output: `audience` shapes the takeaways ("what should a platform engineer do because of this talk"), `languages: ["en","zh"]` turns on a Traditional Chinese toggle, `glossary` fixes recurring Whisper mishearings of product and speaker names, `slide_cap` bounds how many slides each talk embeds.
+You get `digest.html`, or `dist/index.html` plus image assets. Every approved highlight remains visible even when image budgets remove a frame. Image captions describe the image; separate editorial notes explain claims, mechanisms and examples, with labeled applications. Frames link to their actual source timestamps.
 
-## Output and publishing
+Review the result before sharing. Choose a destination and audience explicitly, and use material you have permission to process and publish. Keep source recordings and full transcripts out of the published folder.
 
-Two build modes from the same content:
+## Contributing
 
-- **`dist/` folder** — `index.html` + 900px slides as separate files. Uncapped in size, bounded only by how many files your host accepts.
-- **Single self-contained HTML file** — slides inlined as data URIs, practical ceiling ~8 MB.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for repository structure, local tests, packaging and release review. The [editorial contract](plugins/video-digest/skills/video-digest/references/editorial-contract.md) defines the quality bar.
 
-Publishing is deliberately **tool-agnostic**: the skill tells the agent to look at what the environment actually
-offers and use that — a publish/deploy skill or MCP tool, the host app's own artifact or site feature, or an
-authed CLI (`gh` → Pages, `netlify`, `vercel`, `wrangler`). The target is chosen *before* the build, since a
-folder-capable host gets `--dist` and a single-file-only host gets the inlined build. With nothing available, you
-still get a plain static folder you can drop anywhere, plus a one-liner to serve it locally.
-
-## Cost note
-
-The orchestrator delegates per stage: cheap models for the mechanical per-talk text and vision matching, the strongest model only for talk segmentation and the synthesis essay. The model tier table lives in `video-digest/SKILL.md`.
-
-## License
-
-MIT
+MIT license covers the code and original reference; source-video rights remain with their owners.

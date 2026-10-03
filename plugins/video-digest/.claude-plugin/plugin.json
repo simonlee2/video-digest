@@ -1,6 +1,6 @@
 {
   "name": "video-digest",
-  "version": "0.2.0",
+  "version": "0.3.0-rc.3",
   "description": "Turn talk videos - a YouTube playlist, a conference stream, or local files - into a shareable web digest: per-talk TL;DRs, takeaways, and slides paired with narration.",
   "author": {
     "name": "Simon Lee"
