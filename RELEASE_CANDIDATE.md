@@ -37,7 +37,7 @@ Use `--host claude` or `--host generic` with a fresh output directory for those 
 
 ## Release gates
 
-1. Review the bounded Codex real-source evidence in [EVALUATION.md](EVALUATION.md). Decide whether to proceed with a Codex-first release or wait for safe authorized Claude capacity; do not claim Claude inference coverage from file validation. Browser visual QA of the latest output remains unverified.
+1. Review the bounded Codex real-source evidence in [EVALUATION.md](EVALUATION.md). Decide whether to proceed with a Codex-first release or wait for safe authorized Claude capacity; do not claim Claude inference coverage from file validation. Local Chromium acceptance passes for both HTML formats at wide/narrow widths; physical-device/Safari coverage remains unclaimed.
 2. Review the draft PR before merging or tagging a release. The candidate branch and default branch are distinct installation targets.
 3. Approve public demo content. The included original fictional demo is suitable for a labeled layout/workflow preview. The private conference digest needs a separate rights/publication decision before public use.
 4. Approve the post and final links after the release exists. No post has been sent.

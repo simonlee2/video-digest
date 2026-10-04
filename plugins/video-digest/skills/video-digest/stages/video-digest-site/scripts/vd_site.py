@@ -351,12 +351,15 @@ langsw = ('<div class="langsw" role="group" aria-label="Language">'
           '<button type="button" data-lang="en">EN</button>'
           '<button type="button" data-lang="zh">中文</button></div>') if HAS_ZH else ""
 
+def plural(count, noun):
+    return noun if count == 1 else noun + "s"
+
 ovwrap = []
 for g in groups:
     cards = "".join(card(it) for it in g["items"])
     dd = esc(g["meta"].get("date", ""))
     pre = f'{dd}{" · " if dd else ""}'
-    meta_line = T(f'{pre}{g["n_talks"]} talks · {g["n_slides"]} slides',
+    meta_line = T(f'{pre}{g["n_talks"]} {plural(g["n_talks"], "talk")} · {g["n_slides"]} {plural(g["n_slides"], "slide")}',
                   f'{pre}{g["n_talks"]} 場演講 · {g["n_slides"]} 張投影片')
     ovwrap.append(f'<section class="ovgrid" data-day="{g["key"]}"><header class="ovhead">'
                   f'<h2>{esc(g["meta"]["label"])}</h2><p>{meta_line}</p>'
@@ -555,8 +558,8 @@ head_en, head_zh = cfg_t("headline", "The talks, in slides & takeaways.")
 lede_en, lede_zh = cfg_t("lede", "Skim the overview, then open any talk for the slides, the thesis, and what it means for your work.")
 foot_en, foot_zh = cfg_t("footer", "Transcripts are automatically generated and may contain recognition errors. Selected frames and highlights link to their source recordings.")
 
-stats = (f'<span><b>{tot_talks}</b> {T("talks", "場演講")}</span>'
-         f'<span><b>{tot_slides}</b> {T("slides", "張投影片")}</span>')
+stats = (f'<span><b>{tot_talks}</b> {T(plural(tot_talks, "talk"), "場演講")}</span>'
+         f'<span><b>{tot_slides}</b> {T(plural(tot_slides, "slide"), "張投影片")}</span>')
 if multi:
     stats += f'<span><b>{esc(", ".join(g["meta"]["label"] for g in groups))}</b></span>'
 legend_html = f'<div class="legend">{legend}</div>' if legend else ""

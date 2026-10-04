@@ -33,7 +33,7 @@ All final approved highlights and notes are checked in the actual renderer, incl
 
 The audit finds no exact repeated blocks or missing numeric evidence ranges in either final comparison output. That did not diagnose the first draft's semantic repetition: human/model editorial judgment was still required. One team-composition note cites the later adoption example beyond its local evidence window; the later case block supplies that evidence. The metrics do not establish sentence-level provenance completeness. No unsupported material factual claim was found in the reviewed final editorial, but this remains source-grounded review of automatic transcription, not an external fact-check.
 
-Final compression was exercised as a bounded revision with an explicit request to run that stage. A fresh unattended end-to-end run of the final guidance has not been repeated. Do not claim consistent first-pass concision or general improvement across talks from this result. Browser visual/interaction QA and Claude inference remain unverified.
+Final compression was exercised as a bounded revision with an explicit request to run that stage. A fresh unattended end-to-end run of the final guidance has not been repeated. Do not claim consistent first-pass concision or general improvement across talks from this result. Chromium browser acceptance now passes as described below; Claude inference remains unverified.
 
 ## Method and limits
 
@@ -45,6 +45,16 @@ Word counts include highlight text, editorial notes and labeled per-point applic
 
 Full automatic transcripts and recordings remain outside the repository. Source fidelity was reviewed against the local transcript and actual frames; the full audio was not independently re-listened. Unresolved names and external-company anecdotes should not become asserted facts. A single same-talk repeat cannot isolate prompt effects from model variation or establish general reliability.
 
+## Browser acceptance follow-up
+
+The already-installed Chrome for Testing 153.0.8010.12 rendered both standalone and folder HTML from local files in an isolated headless profile. No installation, public deployment or Safari/security setting change was needed. Native Chromium DevTools Protocol exercised the page at 1280, 390 and 320 CSS pixels wide (900 high).
+
+All six format/width combinations passed: the overview card opened the talk, the overview link returned, browser Back restored the detail, and a direct-link reload retained it. Every selected frame was scrolled into view and decoded successfully. All ten approved highlights and thirteen notes were visible in the rendered detail. There was no horizontal overflow, missing-image fallback, failed resource request or JavaScript exception. Screenshots of the overview, detail, lab diagram and final highlights were visually inspected. This particular digest has no expandable sections or bilingual toggle to exercise. External source URL/offset targets were checked; YouTube playback was not retested.
+
+The browser review exposed one small renderer defect: singular counts displayed as “1 talks” (and “1 slides” in the fixture). The shared renderer now handles singular English labels; the existing one-talk/one-slide renderer test covers the fix. Both real digest formats were rebuilt and the six browser cases rerun successfully. The editorial content was unchanged.
+
+This establishes headless Chromium layout and navigation at wide/narrow widths, not physical-device touch behavior or Safari compatibility. Dense slide fine print still needs a larger/source view; the adjacent editorial remains readable on narrow screens. The test harness initially measured before smooth scrolling settled; waiting for settled navigation and using immediate test scrolling resolved that harness timing issue, without changing the page’s scrolling behavior.
+
 ## Release boundary
 
-Keep the PR as the review source. The smallest next decision is a Codex-first release with the Claude limitation explicit, or waiting for an authorized Claude pilot. Neither merging, tagging, release publication nor a public conference demo is implied by these tests. Safari’s last WebDriver check was blocked by disabled remote automation; no browser setting was changed, so latest visual layout and live interaction remain unverified.
+Keep the PR as the review source. The smallest next decision is a Codex-first release with the Claude limitation explicit, or waiting for an authorized Claude pilot. Neither merging, tagging, release publication nor a public conference demo is implied by these tests. Safari WebDriver remains disabled, but already-installed Chromium supplied the local browser acceptance route without any global setting change.

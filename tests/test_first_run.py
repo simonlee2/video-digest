@@ -66,6 +66,7 @@ class FirstRunTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertIn('1 slides', result.stdout)
                 self.assertIn('Small feedback loops', output.read_text())
+                self.assertIn('1 talk · 1 slide', output.read_text())
                 self.assertIn('alt="A chart of feedback loops"', output.read_text())
                 self.assertIn('<strong>Measure the learning loop</strong>', output.read_text())
                 self.assertIn('<li>Retain the later evidence too.</li>', output.read_text())
