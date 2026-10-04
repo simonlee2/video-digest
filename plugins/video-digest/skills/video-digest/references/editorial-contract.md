@@ -9,6 +9,18 @@ Read the full talk and the passage around the timestamp. Write the speaker's spe
 
 Check selected frames at full resolution. Verify uncertain names, numbers and quotations against the frame or recording; omit or qualify anything unresolved. A frame may illustrate a wider passage, so retain both its exact extraction time and the passage's evidence range. Identify panel/speaker images as representative. Keep predictions, reported internal results and demonstrated behavior distinct. Label your own proposed applications as editorial interpretation.
 
+## Edit for information gained
+
+Give each highlight one distinct job in the argument. The heading names it, `text` states the claim, and notes add reasoning, evidence or a necessary caveat. Do not restate the claim in two notes merely to fill a template. One useful note can be enough; retain more when the source needs them. An editorial application is optional, not a required ending for every block. Prefer one concrete overall takeaway to repeating the same recommendation under several frames.
+
+Before approval, perform an explicit compression pass over the complete draft. Organize by distinct reasoning or decisions, not every transcript transition. Adjacent setup, adoption and results from one example usually belong in one or two blocks; keep them separate only when each earns its own reusable lesson. Merge genuinely duplicate points, or let each retain its different mechanism/example. Keep later conclusions and important limitations; brevity must not become truncation. Once approved, the renderer preserves every point. Do not shorten text by slicing the input array.
+
+Keep caveats about a particular result beside that result. Put general transcription or verification limitations in one source note/footer rather than repeatedly announcing omitted material in highlight notes. Review the overall takeaway too: one decision and the evidence needed to make it is usually enough. Save a short `editorial-review.md` in the output item naming the points combined/shortened and why any apparently similar points remain. This records the editing judgment, not just the audit’s counts.
+
+Review the visual coverage of the argument, not just individual candidates. A close-up at a highlight timestamp does not mean the passage has no useful slide. For an important unillustrated concept, inspect other moments in its supporting passage and select a relevant diagram, workflow or demonstration if present. Preserve the highlight time and record the new frame's actual offset separately. Do not fill time intervals with irrelevant images or force slides into a discussion-only talk.
+
+Run `python3 scripts/audit_editorial.py <item_dir>` from this skill directory before delivery. It reports word counts, exact repeated blocks, missing evidence ranges, selected-frame gaps and unillustrated starred highlights. These are review prompts, not an automatic quality score or word/image quota. Compare the report with a prior version when evaluating a change, then review semantic repetition, coverage and source fidelity yourself.
+
 ## Fields on each highlight
 
 ```json
@@ -48,6 +60,7 @@ The current renderer displays structured editorial in its source language in eit
 
 - Every included talk is grounded in its full transcript; inaccessible material is identified.
 - Every frame has a relevant claim and explanation, with specific evidence/example when available. Adjacent points advance the argument rather than repeat it.
+- Notes add information beyond their heading and highlight; optional applications do not repeat the overall takeaway. Important unillustrated passages were checked for useful frames beyond the initial candidates.
 - Every selected image has been inspected; exact frame links and evidence windows are correct.
 - Speaker claims, uncertainty and editorial applications are distinguishable.
 - Every approved highlight and editorial note appears in the rendered detail view, including the final point. Check image-budget and text-only paths.

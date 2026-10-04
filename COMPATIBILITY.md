@@ -1,10 +1,10 @@
 # Host compatibility
 
-Checked 2026-10-03. The shared `skills/` tree uses the Agent Skills core (`name`, `description`, scripts and references), with no vendor invocation fields, fixed model names or mandatory subagent API. Copy only `skills/video-digest`: stage guides and runtimes are internal and self-contained. The agent needs local file/shell access and image inspection; skill discovery alone does not provide these capabilities. The bundled transcription script still targets Apple Silicon macOS.
+Checked 2026-10-04. The shared `skills/` tree uses the Agent Skills core (`name`, `description`, scripts and references), with no vendor invocation fields, fixed model names or mandatory subagent API. Copy only `skills/video-digest`: stage guides and runtimes are internal and self-contained. The agent needs local file/shell access and image inspection; skill discovery alone does not provide these capabilities. The bundled transcription script still targets Apple Silicon macOS.
 
 | Host | Project-local route | Actual coverage |
 | --- | --- | --- |
-| Codex CLI 0.156.1 | `python3 scripts/check_install.py ../try-codex --host codex` | Clean copy; the single entrypoint validates; copied renderer builds both formats; fresh local `codex debug prompt-input` discovers the entrypoint. No model turn sent. |
+| Codex CLI 0.156.1 | `python3 scripts/check_install.py ../try-codex --host codex` | Clean copy; the single entrypoint validates; copied renderer builds both formats; fresh local `codex debug prompt-input` discovers the entrypoint. Authorized subscription runs completed a synthetic source and a full real-talk digest using cached media/transcript. See [EVALUATION.md](EVALUATION.md) for editorial results and limits. |
 | Claude Code 2.1.280 | `python3 scripts/check_install.py ../try-claude --host claude` | Clean copy; component/manifest validation; copied renderer builds both formats. Live interactive discovery not verified. |
 | Cursor | `--host generic`, then open the created project | Expected compatible with documented `.agents/skills/`; host not exercised here. |
 | VS Code / GitHub Copilot | `--host generic`, then open the created project | Expected compatible with documented `.agents/skills/`; host not exercised here. |
@@ -22,6 +22,6 @@ Official references:
 - [VS Code Agent Skills](https://code.visualstudio.com/docs/agent-customization/agent-skills): project `.github/skills/`, `.claude/skills/` and `.agents/skills/` discovery.
 - Codex behavior was checked against the installed CLI help, bundled `openai.yaml` reference and fresh-process local prompt discovery; no claim is made about a different CLI version.
 
-First supported path to recommend: Codex project-local installation, because it has actual no-model discovery coverage here. Claude remains a target and has an adapter, not a claim of identical validation coverage. Full live inference in either host and remote marketplace installation remain outside this no-paid-call test.
+First supported path to recommend: Codex project-local installation, with discovery, deterministic and bounded real-talk inference coverage. Claude remains a target with an adapter; live inference is pending safe authorized capacity. Remote marketplace installation remains untested. Subscription inference is not a claim of fully local or independently verified zero-cost processing.
 
 Design references applied: [Anthropic webapp-testing](https://github.com/anthropics/skills/tree/main/skills/webapp-testing) for a small entrypoint with helper scripts; [Vercel installer](https://github.com/vercel-labs/skills/blob/main/src/installer.ts) for the selected-folder boundary; [Agent Skills script guidance](https://agentskills.io/skill-creation/using-scripts) for doctor/help/exit behavior; [Superpowers](https://github.com/obra/superpowers) for thin host manifests over shared skills. No source text or assets were copied from these projects. No required file is named metadata.json.

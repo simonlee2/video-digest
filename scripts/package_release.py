@@ -43,7 +43,7 @@ def package(destination):
     archives.append(archive)
     archive = destination / f'video-digest-{version}-source.zip'
     with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as z:
-        for name in ('README.md', 'INSTALL.md', 'LICENSE', 'RELEASE_CANDIDATE.md', 'COMPATIBILITY.md', 'DEVELOPMENT.md', '.gitignore'):
+        for name in ('README.md', 'INSTALL.md', 'LICENSE', 'RELEASE_CANDIDATE.md', 'COMPATIBILITY.md', 'DEVELOPMENT.md', 'EVALUATION.md', '.gitignore'):
             z.write(ROOT / name, Path('video-digest') / name)
         for name in ('.agents', '.claude-plugin', 'plugins', 'examples', 'scripts', 'tests'):
             for path in files_under(ROOT / name):

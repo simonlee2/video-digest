@@ -15,7 +15,7 @@ Input: `<item_dir>` with `manifest.json` + `sessions/*.md` (highlights with time
 python3 scripts/vd_frames.py <item_dir>    # frames/<stem>/hNN_{0,1,2}.jpg + highlights.json
 python3 scripts/vd_montage.py <item_dir>   # montages/<stem>_pN.jpg + montages/index.json
 ```
-Frames at 960px wide, offsets −5/0/+5s per highlight. Montage grid: rows = highlights, 3 columns of candidates, labeled `hNN:j  HH:MM:SS`, 8 rows/page.
+Initial frames are 960px wide, at offsets −5/0/+5s per highlight. These are a first pass; inspect the supporting passage for important concepts missed by this sampling. Montage labels use candidate array indices and actual extraction times. Failed candidates can compress that array. Replace a candidate slot with a more useful genuine frame when needed, updating its filename and `frame_seconds` together while keeping the highlight timestamp. Re-extract at source resolution for small text when necessary. Montage grid: rows = highlights, 3 columns of candidates, 8 rows/page.
 
 ## 2. Vision LLM steps (fan out ~5 talks/agent, available vision-capable models)
 
@@ -26,4 +26,4 @@ Fireside chats / no-slides talks: all-null is correct; the digest renders text-o
 
 ## 3. Editorial pass
 
-Read [the editorial contract](../../references/editorial-contract.md). After frame verification, enrich each approved frame highlight in `highlights.json` with separate visual metadata and transcript-grounded editorial fields. Re-read the surrounding transcript and wider argument; complete every selected highlight, then run the contract’s quality checklist. Preserve text-only highlights. Re-running `vd_frames.py` regenerates `highlights.json`, so perform this pass after extraction and preserve approved edits before regenerating.
+Read [the editorial contract](../../references/editorial-contract.md). After frame verification, enrich each approved frame highlight in `highlights.json` with separate visual metadata and transcript-grounded editorial fields. Re-read the surrounding transcript and wider argument; each note must add reasoning, evidence or a needed caveat rather than repeat the headline. Applications are optional. Review repetition across the whole talk, then run the contract’s quality checklist and bundled editorial audit. Preserve text-only highlights. Re-running `vd_frames.py` regenerates `highlights.json`, so perform this pass after extraction and preserve approved edits before regenerating.

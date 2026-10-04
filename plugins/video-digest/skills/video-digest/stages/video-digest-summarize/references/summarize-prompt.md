@@ -3,7 +3,7 @@
 INPUT: {ITEM_DIR}/sessions/<name>.txt — lines "[HH:MM:SS] text" (video offsets).
 Auto-transcribed (Whisper): silently fix obvious ASR errors (names/products) from context; don't invent.
 
-Read `../../../references/editorial-contract.md` before writing. Read the full transcript, then ground each highlight in its timestamp neighborhood: specific claim, mechanism, concrete example/evidence when available, and supported implication. Cover the argument through its later conclusions. Label editorial applications and preserve uncertainty.
+Read `../../../references/editorial-contract.md` before writing. Read the full transcript, then ground each highlight in its timestamp neighborhood: specific claim, mechanism, concrete example/evidence when available, and supported implication. Cover the argument through its later conclusions. Label editorial applications and preserve uncertainty. Give each point a distinct role; combine repeated advice unless a later example or caveat changes its meaning. Group by reasoning, not every topic transition or step in one example. Select for substance rather than filling a bullet quota. After frame editorial is added, apply the contract’s final compression pass before approval.
 
 For each assigned talk WRITE {ITEM_DIR}/sessions/<name>.md EXACTLY:
 
@@ -15,7 +15,7 @@ For each assigned talk WRITE {ITEM_DIR}/sessions/<name>.md EXACTLY:
 3–5 sentences, concrete (what it argued/covered). For a fireside/long talk, up to 6.
 
 ## Highlights
-- **[HH:MM:SS]** point   (6–9 bullets; 9–12 for a long talk/fireside; real timestamps from the slice, in order)
+- **[HH:MM:SS]** point   (often 6–9 bullets; use fewer or more when the argument warrants it; real timestamps from the slice, in order)
 - Prefix the 2–4 most essential highlights with `★ ` (e.g. `- **[00:12:30]** ★ point`) — the ones whose slide is core to the thesis/takeaway. These win when slide space is tight. Star sparingly; most bullets stay unmarked.
 
 ## Notable quotes

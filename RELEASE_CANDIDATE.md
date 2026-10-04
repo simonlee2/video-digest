@@ -26,18 +26,18 @@ Use `--host claude` or `--host generic` with a fresh output directory for those 
 
 ## Actual verification
 
-- 20 tests pass, including isolated Codex, Claude and generic layouts, both HTML formats, all approved highlights, image-loss paths, numbering, exact frame links, relative reference containment and doctor output.
+- 24 tests pass, including isolated Codex, Claude and generic layouts, both HTML formats, all approved highlights, image-loss paths, numbering, exact frame links, relative reference containment and doctor output.
 - The neutral entry skill passes the local Codex skill-creator validator. Claude Code 2.1.280 validates the project-local skill components and plugin manifest.
 - Fresh Codex 0.156.1 `debug prompt-input` discovers the final installed entrypoint; internal stages do not appear in its skill catalog. This local diagnostic sent no prompt to an external model.
 - A live Claude model session was not started. Its available validator verifies files, not live discovery. No equivalent documented no-model prompt-discovery diagnostic was found; an interactive host check is still needed before claiming that coverage.
 - Cursor and VS Code installation paths are supported by their official documentation, but those hosts were not exercised here. Generic compatibility is an expectation, not a completed runtime test.
 - Python compilation, shell syntax and diff checks pass. No global install, new account or paid API was used for these deterministic checks. Subsequent explicitly authorized subscription pilots are reported separately in the PR.
-- Previous eleven-talk real-media processing and desktop/mobile digest QA remain supporting workflow evidence. The current clean install uses synthetic material; it does not repeat a paid/model-driven editorial pilot or prove its quality.
+- Previous eleven-talk real-media processing and desktop/mobile digest QA remain supporting workflow evidence. The deterministic clean-install test uses synthetic material. Separately authorized Codex subscription evaluations use the full existing Dan Shipper source and cached transcript; see [EVALUATION.md](EVALUATION.md).
 - Structured editorial remains in its source language when the existing bilingual view changes; full editorial translation is not claimed.
 
 ## Release gates
 
-1. Confirm a live Claude discovery/pilot and an authorized real-source pilot through the final install unit. Codex local discovery and deterministic execution are already verified. Do not infer model-use approval from package validation.
+1. Review the bounded Codex real-source evidence in [EVALUATION.md](EVALUATION.md). Decide whether to proceed with a Codex-first release or wait for safe authorized Claude capacity; do not claim Claude inference coverage from file validation. Browser visual QA of the latest output remains unverified.
 2. Review the draft PR before merging or tagging a release. The candidate branch and default branch are distinct installation targets.
 3. Approve public demo content. The included original fictional demo is suitable for a labeled layout/workflow preview. The private conference digest needs a separate rights/publication decision before public use.
 4. Approve the post and final links after the release exists. No post has been sent.

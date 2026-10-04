@@ -38,8 +38,9 @@ Use [the editorial output contract and quality checklist](references/editorial-c
 2. **PILOT FIRST** on batches: run ONE item end-to-end (ingest → summarize → slides → site), inspect the output, fix config (glossary, kinds, prompts), then batch the rest. Never fan out 50 downloads before one full-path validation.
 3. Batch: run ingestion within available memory. Process editorial work serially or delegate small batches when the host supports it; delegation is optional.
 4. **Essay (default, every digest)**: after all talks are processed, run the site skill's corpus step and write the synthesis essay (`narrative.json`) with the STRONGEST model — plus `narrative.zh.json` if bilingual. On by default; skip only if asked.
-5. Site: build locally for review by default. If publishing is requested, choose an available destination and build its supported format; publish only within the user’s authorized destination and audience. Inspect the final output with permitted browser tools and report any QA limitation.
-6. Register done items in `<project>/ingested.json` `{"items":{"<videoId>":{"group","item"}}}` so re-runs skip them.
+5. Review: run `scripts/audit_editorial.py <item_dir>` for each item, then perform the contract’s explicit compression pass on the complete draft. Record the editing judgment in the item’s `editorial-review.md`; a metrics report alone is not this pass. Check important unillustrated passages beyond the initial frame samples. Metrics do not replace source and visual review.
+6. Site: build locally for review by default. If publishing is requested, choose an available destination and build its supported format; publish only within the user’s authorized destination and audience. Inspect the final output with permitted browser tools and report any QA limitation.
+7. Register done items in `<project>/ingested.json` `{"items":{"<videoId>":{"group","item"}}}` so re-runs skip them.
 
 ## Model choice and privacy
 
