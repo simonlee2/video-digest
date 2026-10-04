@@ -1,97 +1,52 @@
 ---
 name: video-digest
-description: Build a shareable web digest (per-talk TL;DR, takeaways, slides paired with narration) from videos. Sources - a long multi-talk stream (YouTube or file), a YouTube playlist, a single video, or a local folder of videos. Umbrella skill - routes to composable stage skills (ingest, segment, summarize, slides, site). Use when asked to "make a digest / recap / summary site" from talks, a conference, a playlist, or recorded videos.
+description: Build a shareable web digest (per-talk TL;DR, takeaways, slides paired with narration) from videos. Sources - a long multi-talk stream (YouTube or file), a YouTube playlist, a single video, or a local folder of videos. Use when asked to "make a digest / recap / summary site" from talks, a conference, a playlist, or recorded videos.
 ---
 
 # video-digest — orchestrator
 
-Turn videos into a digest site: overview card grid → per-talk detail (TL;DR, "take this to work", slides with captions), optional bilingual toggle + synthesis essay. Generalized from the AIE WF2026 pipeline.
+Turn videos into a digest site: overview card grid → per-talk detail (TL;DR, "take this to work", slides with substantive highlights), optional bilingual toggle + synthesis essay. Generalized from the AIE WF2026 pipeline.
 
-## Stage skills (mix & match)
+## First run
 
-The five stage skills are `user-invocable: false` — they exist for THIS skill to route to (and for stage subagents to load one at a time), so only `video-digest` shows up in the user's skill picker. Invoke them yourself as needed; the user never has to name a stage.
+Run `python3 scripts/doctor.py` from this skill directory to check available tools without installing anything. For an offline output preview, run `python3 scripts/demo.py /path/to/new-demo`; it uses bundled original fictional material and the real renderer. It does not prove real-video editorial quality.
 
+This directory is the complete install unit. Do not require repository siblings, a fixed agent brand, a subagent tool or a specific model provider. Read only the stage guide needed for the current task:
 
-| Stage | Skill | In → Out |
-|---|---|---|
-| 1. Ingest | `video-digest-ingest` | source (URL/playlist/folder) → `video.mp4`, transcript, 30s timeline per item |
-| 2. Segment | `video-digest-segment` | ONLY multi-talk streams: timeline → `talks.json`. Single-video items: auto (1-talk talks.json, done by ingest) |
-| 3. Summarize | `video-digest-summarize` | transcript slices → `sessions/*.md`, `*.take.json`, optional `zh.json` |
-| 4. Slides | `video-digest-slides` | highlights → candidate frames → montages → vision-picked `frames/sel_*.json` |
-| 5. Site | `video-digest-site` | everything → `index.html`/`dist/` (+ optional essay), published with whatever publishing tool the environment offers |
+| Stage | Bundled guide |
+| --- | --- |
+| Acquire and transcribe | [Ingest](stages/video-digest-ingest/STAGE.md) |
+| Split a multi-talk stream | [Segment](stages/video-digest-segment/STAGE.md) |
+| Ground summaries in transcript | [Summarize](stages/video-digest-summarize/STAGE.md) |
+| Extract, inspect and explain real frames | [Frames](stages/video-digest-slides/STAGE.md) |
+| Build and review HTML | [Site](stages/video-digest-site/STAGE.md) |
+
+Scripts named in a stage guide are relative to that guide's directory. Stage guides are internal resources, not separately installed skills.
 
 Routing by source shape:
 - **YouTube playlist / folder of videos** → ingest each video as its own item (skip segment). One group per playlist/folder.
 - **Long multi-talk stream** → one item, then segment.
 - **Single talk video** → one item, skip segment.
 
-## Project layout
-
-```
-<project>/
-├── digest.json                  # config (below)
-├── groups/<group>/              # group = a tab/section (a day, a track, or the whole event)
-│   ├── group.json               # {key,label,date?,hours?}  key MUST be kebab [a-z0-9-]
-│   └── <item>/                  # item = ONE source video; prefix NN- for order (01-opening-keynote)
-│       ├── source.json          # {key,label,subtitle,url?}  url → YouTube deep links in the digest
-│       ├── video.mp4 source.mp4 # gitignored; source.mp4 = symlink
-│       ├── transcript/          # transcript.{tsv,txt,srt...}, timeline_30s.txt, *.clean.txt
-│       ├── talks.json manifest.json highlights.json zh.json
-│       ├── sessions/ frames/ montages/ clips/
-├── dist/                        # published site (site skill)
-└── narrative.json narrative.zh.json   # optional essay
-```
-
-## digest.json (project config)
-
-All text fields accept a string (EN-only) or `{"en":..., "zh":...}`. Minimal example:
-
-```json
-{
-  "key": "compile26",
-  "title": "Cursor Compile 2026 · Digest",
-  "brand": "CURSOR · COMPILE 26",
-  "kicker": "Cursor Compile 2026",
-  "headline": "The conference, in slides & takeaways.",
-  "lede": "Skim the talks, then open any one for the slides, the thesis, and what it means for your work.",
-  "footer": "Transcripts auto-generated (Whisper) then cleaned; names ~95% accurate.",
-  "audience": "an engineer building with AI",
-  "whisper_language": "en",
-  "languages": ["en"],
-  "slide_cap": 8,
-  "glossary": [["\\bKursor\\b", "Cursor"]],
-  "nonspeech": ["thank you."]
-}
-```
-
-- `audience` — steers takeaway prompts ("what should X do because of this talk").
-- `languages` — add `"zh"` to enable the 繁中 toggle (translate step becomes required).
-- `slide_cap` — max embedded slides/talk. Bound by the publish target: single-file builds are size-capped (~8 MB), folder builds are file-count-capped by the host (~1000 is a common ceiling) → cap ≈ (limit − overhead) / talks.
-- `glossary`/`nonspeech` — transcript corrections; start empty, fill after reading the pilot transcript.
-- Optional `kinds` — extra talk-kind pills: `{"demo": {"class":"fire","en":"Demo","zh":"示範"}}`. Built-ins: main/keynote (green), fireside (purple), track/talk (blue); `cutaway`+`nonspeech` are always excluded from the digest.
+Before creating or editing a project, read [project layout and configuration](references/project-config.md). Keep generated media and transcripts in the output project, outside the skill source.
 
 ## Workflow
 
-1. **Scope**: probe the source first (`video-digest-ingest` has probe scripts) — count videos, total duration. Estimate: download ~2–5 min/hour of video (≤720p); mlx-whisper large-v3-turbo ≈ 10–15× realtime on Apple Silicon; disk ~0.5–1 GB/hour.
+Use [the editorial output contract and quality checklist](references/editorial-contract.md) when authoring or integrating the digest. Visual captions and substantive editorial are separate fields; preserve all approved points.
+
+1. **Scope**: probe the source first (`video-digest-ingest` has probe scripts) — count videos, total duration. Estimate: download time and disk depend on the selected media quality; mlx-whisper large-v3-turbo ≈ 10–15× realtime on Apple Silicon; probe actual media sizes when available.
 2. **PILOT FIRST** on batches: run ONE item end-to-end (ingest → summarize → slides → site), inspect the output, fix config (glossary, kinds, prompts), then batch the rest. Never fan out 50 downloads before one full-path validation.
-3. Batch: ingest serially (concurrent Whisper exhausts RAM). LLM stages fan out ~5 talks/agent — **on cheap models** (table below).
+3. Batch: run ingestion within available memory. Process editorial work serially or delegate small batches when the host supports it; delegation is optional.
 4. **Essay (default, every digest)**: after all talks are processed, run the site skill's corpus step and write the synthesis essay (`narrative.json`) with the STRONGEST model — plus `narrative.zh.json` if bilingual. On by default; skip only if asked.
-5. Site: pick the publish target from what this environment actually has (see the site skill — never assume a specific tool), build the mode it accepts, eyeball it in a browser, then publish and report the URL.
-5. Register done items in `<project>/ingested.json` `{"items":{"<videoId>":{"group","item"}}}` so re-runs skip them.
+5. Review: run `scripts/audit_editorial.py <item_dir>` for each item, then perform the contract’s explicit compression pass on the complete draft. Record the editing judgment in the item’s `editorial-review.md`; a metrics report alone is not this pass. Check important unillustrated passages beyond the initial frame samples. Metrics do not replace source and visual review.
+6. Site: build locally for review by default. If publishing is requested, choose an available destination and build its supported format; publish only within the user’s authorized destination and audience. Inspect the final output with permitted browser tools and report any QA limitation.
+7. Register done items in `<project>/ingested.json` `{"items":{"<videoId>":{"group","item"}}}` so re-runs skip them.
 
-## Model tiers — delegate grunt work to cheaper models
+## Model choice and privacy
 
-Fan-out LLM steps run as subagents; pick the model per stage (Agent tool `model` param):
+Use the current agent or available subagents for editorial work; a particular provider or model name is not required. Match capability to the source: full-transcript reasoning and frame verification need adequate text and vision quality. Delegate in small batches when useful and supported. Recheck weak or uncertain output rather than optimizing solely for model cost.
 
-| Stage | Model | Why |
-|---|---|---|
-| segment + verify | strong (session model) | fragile; drops talks if sloppy |
-| summarize, takeaway | sonnet | mechanical per-talk text work |
-| slide-select | haiku/sonnet | simple vision matching |
-| slide-verify | sonnet | adversarial check of the cheap pass |
-| translate | sonnet | routine; use opus only if quality complaints |
-| essay synthesis | strongest available | cross-talk judgment, the flagship text |
-| site build/publish | (scripts, no LLM) | — |
+Media acquisition, transcription and rendering can run on the local machine. Editorial inference uses the agent's configured model, which may send transcripts and frames to a provider and incur usage charges. Describe this distinction accurately; local scripts do not imply fully on-device inference.
 
 ## Ops notes
 

@@ -1,0 +1,34 @@
+{
+  "name": "video-digest",
+  "version": "0.3.0-rc.3",
+  "description": "Turn talk videos - a YouTube playlist, a conference stream, or local files - into a shareable web digest: per-talk TL;DRs, takeaways, and slides paired with narration.",
+  "author": {
+    "name": "Simon Lee"
+  },
+  "repository": "https://github.com/simonlee2/video-digest",
+  "homepage": "https://github.com/simonlee2/video-digest",
+  "license": "MIT",
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Video Digest",
+        "shortDescription": "Videos to grounded digests",
+        "longDescription": "A five-stage pipeline: download and transcribe videos (yt-dlp + Whisper), segment long streams into individual talks, write per-talk TL;DRs and practical takeaways, pull the speaker's actual slides from the video and pair them with what was said, then build a digest site that deep-links back into the source video. Works from a YouTube playlist, a channel's streams tab, one long conference recording, a single talk, or a folder of local files.",
+        "developerName": "Simon Lee",
+        "category": "Productivity",
+        "capabilities": [
+          "Read",
+          "Write",
+          "Interactive"
+        ],
+        "websiteURL": "https://github.com/simonlee2/video-digest",
+        "defaultPrompt": [
+          "Make a digest from this YouTube playlist: <url>",
+          "Digest this conference stream into per-talk summaries and slides",
+          "Add the new talks from that playlist to my existing digest"
+        ]
+      }
+    }
+  }
+}

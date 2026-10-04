@@ -1,3 +1,15 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# Local output and runtime state; keep real media outside this source checkout.
+/dist/
+/release/
+/releases/
+.venv/
+.env
+.env.*
+!.env.example
+*.mp4
+*.webm
+*.wav
