@@ -52,6 +52,8 @@ single-file size caps (~8 MB for most artifact hosts), and hosts that rewrite or
 
 ## Verify before publishing
 
+The generated document is readable without JavaScript; routing is an enhancement activated only after successful initialization. Check a script-disabled preview as well as the interactive page, in both delivery formats when applicable.
+
 Open the built file in a browser (or the agent-browser skill): check a card → detail → slide captions render, hash
 routing works (#back button), no horizontal scroll, and (if zh) the toggle.
 

@@ -17,6 +17,24 @@ Use fresh destinations. These checks copy only the install unit and run the copi
 
 Regression coverage includes the selected-folder boundary, paths containing spaces, internal reference containment, complete editorial notes, image budgets/failures, source timestamps and group-wide talk numbering. Review a full talk in a permitted browser at desktop and narrow widths; structural tests do not establish visual quality. The fictional example proves deterministic setup and rendering, not real-video analysis quality.
 
+## Browser regression checks
+
+The renderer progressively enhances a readable document: overview, talk content and
+synthesis remain visible without JavaScript, with ordinary anchor navigation.
+Single-panel routing is enabled only after successful initialization. Both output
+formats have deterministic visibility, anchor and routing/failure regressions.
+
+To also exercise actual browser layout and image loading, set
+`VIDEO_DIGEST_CHROME` to an already-installed Chromium executable and run the same
+unittest command above with Node 22+. This optional regression launches an isolated
+headless profile and checks both formats with JavaScript disabled/enabled at
+1280, 390 and 320 CSS pixels. It checks all fictional editorial, images, native
+anchors, enhanced navigation and the discussion. It installs nothing and changes
+no browser settings. Without that executable the browser test is explicitly skipped.
+Set `VIDEO_DIGEST_BROWSER_ARTIFACTS` to a directory outside the checkout to retain
+its report and screenshots. This is Chromium coverage, not actual iOS preview or
+Safari verification.
+
 ## Editorial evaluation
 
 Use `python3 plugins/video-digest/skills/video-digest/scripts/audit_editorial.py <item_dir>` on each compared output. It counts all editorial, including text-only and final points, identifies exact repeated blocks, and reports actual selected-frame offsets, gaps, missing evidence windows and unillustrated starred points. It does not score prose, infer semantic duplication, require evenly spaced images or prove source fidelity.
