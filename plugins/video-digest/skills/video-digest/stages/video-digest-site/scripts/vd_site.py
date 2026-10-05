@@ -361,7 +361,7 @@ for g in groups:
     pre = f'{dd}{" · " if dd else ""}'
     meta_line = T(f'{pre}{g["n_talks"]} {plural(g["n_talks"], "talk")} · {g["n_slides"]} {plural(g["n_slides"], "slide")}',
                   f'{pre}{g["n_talks"]} 場演講 · {g["n_slides"]} 張投影片')
-    ovwrap.append(f'<section class="ovgrid" data-day="{g["key"]}"><header class="ovhead">'
+    ovwrap.append(f'<section class="ovgrid" id="{g["key"]}" data-day="{g["key"]}"><header class="ovhead">'
                   f'<h2>{esc(g["meta"]["label"])}</h2><p>{meta_line}</p>'
                   f'</header><div class="grid">{cards}</div></section>')
 
@@ -411,7 +411,7 @@ strong{font-weight:600}
 .masthead .stats b{color:var(--ink)}
 .masthead .legend{display:flex;gap:16px;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--slate);flex-wrap:wrap}
 .masthead .legend>span{display:inline-flex;gap:6px;align-items:center}
-body[data-view=detail] .masthead{display:none}
+html.enhanced body[data-view=detail] .masthead{display:none}
 .tabs{position:sticky;top:46px;z-index:5;display:flex;gap:6px;flex-wrap:wrap;padding:12px 0;background:var(--paper);border-bottom:1px solid var(--line)}
 .tabs:empty{display:none}
 .daytab{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--slate);padding:7px 14px;border-radius:999px;border:1px solid var(--line)}
@@ -419,8 +419,9 @@ body[data-view=detail] .masthead{display:none}
 .daytab:hover{background:var(--tint);color:var(--ink)}
 .daytab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
 .daytab.active .n{opacity:.7}
-.ovgrid{display:none}.ovgrid.active{display:block}
-body[data-view=detail] .ovwrap{display:none}
+.ovgrid{display:block}
+html.enhanced .ovgrid{display:none}html.enhanced .ovgrid.active{display:block}
+html.enhanced body[data-view=detail] .ovwrap{display:none}
 .ovhead{padding:34px 0 6px}
 .ovhead h2{font-family:var(--serif);font-size:26px;font-weight:600;margin:0}
 .ovhead p{font-family:var(--mono);font-size:12px;color:var(--slate);margin:4px 0 0;text-transform:uppercase;letter-spacing:.04em}
@@ -439,9 +440,10 @@ body[data-view=detail] .ovwrap{display:none}
 .ctitle{font-family:var(--serif);font-weight:600;font-size:18px;line-height:1.18;letter-spacing:-.01em;text-wrap:balance;overflow-wrap:anywhere}
 .cspk{font-size:12.5px;color:var(--slate);overflow-wrap:anywhere}
 .ctldr{font-size:13.5px;line-height:1.5;color:var(--ink);margin-top:4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
-body[data-view=overview] .detailwrap{display:none}
-.session{display:none;max-width:760px;margin:0 auto;padding:26px 0 40px}
-.session.active{display:block}
+html.enhanced body[data-view=overview] .detailwrap{display:none}
+.session{display:block;max-width:760px;margin:0 auto;padding:26px 0 40px}
+html.enhanced .session{display:none}html.enhanced .session.active{display:block}
+.session,.essay,.ovgrid{scroll-margin-top:125px}
 .back{display:inline-block;font-family:var(--mono);font-size:12px;color:var(--accent);text-decoration:none;margin-bottom:22px}
 .back:hover{text-decoration:underline}
 .eyebrow{display:flex;gap:9px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--slate);margin-bottom:12px;flex-wrap:wrap}
@@ -475,9 +477,10 @@ footer{border-top:1px solid var(--line);padding:26px 0 80px;color:var(--slate);f
 html{scroll-padding-top:104px}
 @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.essaywrap{display:none}
-body[data-view=essay] .essaywrap{display:block}
-body[data-view=essay] .masthead,body[data-view=essay] .ovwrap,body[data-view=essay] .detailwrap{display:none}
+.essaywrap{display:block}
+html.enhanced .essaywrap{display:none}
+html.enhanced body[data-view=essay] .essaywrap{display:block}
+html.enhanced body[data-view=essay] .masthead,html.enhanced body[data-view=essay] .ovwrap,html.enhanced body[data-view=essay] .detailwrap{display:none}
 .essaytab{border-color:var(--accent);color:var(--accent);font-weight:600}
 .essaytab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .herocta{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:#fff;background:var(--accent);padding:11px 18px;border-radius:999px;text-decoration:none}
@@ -549,6 +552,8 @@ function setLang(l){l=(l==='zh')?'zh':'en';document.body.classList.toggle('lang-
 langBtns.forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
 let L='en';try{L=localStorage.getItem('LANG_KEY')||'en'}catch(e){}
 if(langBtns.length)setLang(L);
+// Keep all content readable if scripts are disabled or initialization fails.
+document.documentElement.classList.add('enhanced');
 """.replace("LANG_KEY", LANG_KEY)
 
 title_en, _ = cfg_t("title", "Video Digest")
